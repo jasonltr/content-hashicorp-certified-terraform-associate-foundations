@@ -1,5 +1,5 @@
 #Create VPC in us-east-1
-resource "aws_vpc" "vpc_master" {
+resource "aws_vpc" "jasonvpc" {
   cidr_block = "10.0.0.0/16"
   tags = {
     Name = "${terraform.workspace}-vpc"
@@ -15,7 +15,7 @@ data "aws_availability_zones" "azs" {
 #Create subnet # 1 in us-east-1
 resource "aws_subnet" "subnet" {
   availability_zone = element(data.aws_availability_zones.azs.names, 0)
-  vpc_id            = aws_vpc.vpc_master.id
+  vpc_id            = aws_vpc.jasonvpc.id
   cidr_block        = "10.0.1.0/24"
 
   tags = {
@@ -28,7 +28,7 @@ resource "aws_subnet" "subnet" {
 resource "aws_security_group" "sg" {
   name        = "${terraform.workspace}-sg"
   description = "Allow TCP/22"
-  vpc_id      = aws_vpc.vpc_master.id
+  vpc_id      = aws_vpc.jasonvpc.id
   ingress {
     description = "Allow 22 from our public IP"
     from_port   = 22
